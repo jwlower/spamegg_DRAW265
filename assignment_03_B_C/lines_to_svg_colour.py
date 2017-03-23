@@ -114,12 +114,18 @@ def parse_line(line):
 	m = x.match(line, offset)
 	y = re.compile('[A-Z]+[A-Za-z]*')
 	n = y.search(line)
+	z = re.compile('[a-z]')
 
 	if m:
 		return L
 	elif n:
 		colour = n.group()
 		L.append(colour)
+		offset = n.end()
+		m = x.match(line, offset)
+		n = z.search(line, offset)
+		if n:
+			return offset + 1
 		return L
 	
 	return offset # error: non-space after last x/y token
