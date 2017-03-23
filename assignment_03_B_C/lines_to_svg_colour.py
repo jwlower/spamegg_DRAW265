@@ -110,20 +110,23 @@ def parse_line(line):
 		else: # error: illegal token value
 			return offset
 	# ***** check for non-space after last correct token
-	x = re.compile(' *$')
-	m = x.match(line, offset)
-	y = re.compile('[A-Z]+[A-Za-z]*')
-	n = y.search(line)
+	while True:
+		x = re.compile(' *$')
+		m = x.match(line, offset)
+		y = re.compile('[A-Z]+[A-Za-z]*')
+		n = y.search(line, offset)
 	
-	if m:
-		return L
-	elif n:
-		colour = n.group()
-		L.append(colour)
-		
-		return L
+		if m:
+			return L
+		elif n:
+			
+			colour = n.group()
+			offset = offset + len(colour)+1
+			L.append(colour)
+			if offset == len(line):
+				return L
 	
-	return offset # error: non-space after last x/y token
+		return offset # error: non-space after last x/y token
 
 # purpose
 #	write to stdout the lines in lines_file converted to SVG
