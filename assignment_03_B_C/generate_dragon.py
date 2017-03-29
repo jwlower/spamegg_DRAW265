@@ -4,11 +4,11 @@ import Line_Point
 big_count = 0
 '''
 purpose
-	write to stdout a dragon curve with i iterations, line length l, and colour c preconditions
+	write to stdout a dragon curve with i iterations, line length l, colour c, and rotation angle(optional) r  preconditions
 	i and l are positive non-zero ints and floats (respectively)
 	c is a string
 '''
-def next_line(root, i, turn):
+def next_line(root, i, turn, r):
 	# copy root
 	new_line = Line_Point.Line(root.point0, root.point1)
 
@@ -17,9 +17,9 @@ def next_line(root, i, turn):
 
 	# rotate and scale
 	if turn[i-1] == 'R':
-		new_line.rotate(1.5708)
+		new_line.rotate(r)
 	else:
-		new_line.rotate(-1.5708)
+		new_line.rotate(-r)
 
 	# translate back
 	new_line.translate(root.point0.x, root.point0.y)
@@ -29,8 +29,8 @@ def next_line(root, i, turn):
 
 	return new_line
 
-##### i = iterations, l = line_length, c = colour, t = turn
-def recursive_draw(root, i, l, c, t):
+##### i = iterations, l = line_length, c = colour, t = turn r = rotation_angle
+def recursive_draw(root, i, l, c, t, r):
 	# end recursion if base case reached
 	if (i == 0):
 		return
@@ -39,20 +39,20 @@ def recursive_draw(root, i, l, c, t):
 	print 'line', root, c
 
 	# continue with recursion
-	recursive_draw(next_line(root,i,t), i-1, l, c, t)
+	recursive_draw(next_line(root,i,t), i-1, l, c, t, r)
 
-##### i = iterations, l = line_length, c = colour, t = turn
-def iterative_draw(root, i, l, c, t):
+##### i = iterations, l = line_length, c = colour, t = turn r = rotation_angle
+def iterative_draw(root, i, l, c, t, r):
 	count = 0
 	pair = 0
 	while count < i:
 		count = count + 1
 		print 'line', root, c
-		root = next_line(root,i,t)
+		root = next_line(root,i,t,r)
 		i = i - 1
 		
-##### i = iterations, l = line_length, c = colours in list, t = turn
-def iterative_draw_c(root, i, l, c, t):
+##### i = iterations, l = line_length, c = colours in list, t = turn r = rotation_angle
+def iterative_draw_c(root, i, l, c, t, r):
 	count = 0
 	pair = 0
 	while count < i:
@@ -62,7 +62,7 @@ def iterative_draw_c(root, i, l, c, t):
 				pair = 0
 		count = count + 1
 		print 'line', root, colours[pair]
-		root = next_line(root,i,t)
+		root = next_line(root,i,t,r)
 		i = i - 1	
 
 		
@@ -96,13 +96,24 @@ def iterative_map(map, i):
 	return map	
 
 # ********** process the command line arguments
-if len(sys.argv) != 4:
-	print >> sys.stderr, 'Requires command line input: ' + sys.argv[0] + ' iterations line_length colour'
+if ((len(sys.argv) != 5) and (len(sys.argv)!= 4)):
+	print >> sys.stderr, 'Requires command line input: ' + sys.argv[0] + ' iterations line_length colour rotation_angle'
 	sys.exit(1)
 try:
 	iterations = int(sys.argv[1])
 	line_length = float(sys.argv[2])
 	colour = str(sys.argv[3])
+	####if no rotation angle is not provided in the command line then the standard pi/2 rotation is used
+	if len(sys.argv) == 4:
+		rotation_angle = float((math.pi)/2)
+	elif len(sys.argv) == 5:
+		rotation_angle = float(sys.argv[4])
+	if (rotation_angle < 1.45) or (rotation_angle > 1.63):
+		print >> sys.stderr, 'To resemble the standard dragon curve the rotation angle should be  1.45 < r < 1.63'
+		print >> sys.stderr, 'Rotation angle r can go out of the recommended range for experimentation'
+		print >> sys.stderr, 'Inorder to make the imager clearer as the rotation angle increases the line length should increase'
+		print >> sys.stderr, 'Inorder to keep the image in the frame as the rotation angle decreases the line length should decrease'
+		
 except ValueError:
 	print >> sys.stderr, 'Requires command line input: ' + sys.argv[0] + ' iterations(int > 0) line_length(float > 0) colour(String)'
 	sys.exit(2)
@@ -127,6 +138,6 @@ cs = len(colours)
 
 
 if fun:
-	iterative_draw_c(root,its,line_length,cs,new_map)
+	iterative_draw_c(root,its,line_length,cs,new_map,rotation_angle)
 else:
-	iterative_draw(root,its,line_length,colour,new_map)
+	iterative_draw(root,its,line_length,colour,new_map,rotation_angle)
