@@ -54,20 +54,20 @@ def load_line_file(file_object):
 # ***** process command line arguments
 
 if len(sys.argv) != 2:
-	print >> sys.stderr, 'Syntax: ' + sys.argv[0] + ' number_of_rings'
+	print >> sys.stderr, 'Syntax: ' + sys.argv[0] + ' number_of_dragons'
 	sys.exit(1)
 try:
 	number_of_dragons = int(sys.argv[1])
 except ValueError:
-	print >> sys.stderr, 'Syntax: ' + sys.argv[0] + ' number_of_rings'
+	print >> sys.stderr, 'Syntax: ' + sys.argv[0] + ' number_of_dragons'
 	sys.exit(2)
-if number_of_dragons < 1 or number_of_dragons > 5:
-	print >> sys.stderr, 'Syntax: ' + sys.argv[0] + ' number_of_rings'
+if number_of_dragons < 1:
+	print >> sys.stderr, 'Syntax: ' + sys.argv[0] + ' number_of_dragons'
 	sys.exit(3)
 
 L = load_line_file(sys.stdin)
 
-# ***** generate the rings
+# ***** generate the ring
 
 for i in range(number_of_dragons):
 	draw_ring(L, 0.0, number_of_dragons)
