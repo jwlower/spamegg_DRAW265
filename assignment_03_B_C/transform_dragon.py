@@ -1,3 +1,7 @@
+'''
+This code is an edited version of rotate_scale_translate.py from assignment 3 of SENG 265
+
+'''
 import sys
 import copy
 import math
