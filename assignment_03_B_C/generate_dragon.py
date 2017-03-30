@@ -1,5 +1,6 @@
 import sys
 import math
+import random 
 import Line_Point
 big_count = 0
 '''
@@ -44,40 +45,46 @@ def recursive_draw(root, i, l, c, t, r):
 	
 	
 ##### i = iterations, c = colour, s = total segments, sl = segments left to draw, t = total number of lines
-def special_colour(i, c, s, sl, tl):
+def special_colour(i, c, s, sl, tl, c1, c2, c3):
+	palette = ['AliceBlue', 'AntiqueWhite', 'Aqua', 'Aquamarine', 'Azure', 'Beige', 'Bisque', 'Black', 'BlanchedAlmond', 'Blue', 'BlueViolet', 'Brown', 'BurlyWood', 'CadetBlue', 'Chartreuse', 'Chocolate', 'Coral', 'CornflowerBlue', 'Cornsilk', 'Crimson', 'Cyan', 'DarkBlue', 'DarkCyan', 'DarkGoldenRod', 'DarkGray', 'DarkGrey', 'DarkGreen', 'DarkKhaki', 'DarkMagenta', 'DarkOliveGreen', 'DarkOrange', 'DarkOrchid', 'DarkRed', 'DarkSalmon', 'DarkSeaGreen', 'DarkSlateBlue', 'DarkSlateGray', 'DarkSlateGrey', 'DarkTurquoise', 'DarkViolet', 'DeepPink', 'DeepSkyBlue', 'DimGray', 'DimGrey', 'DodgerBlue', 'FireBrick', 'FloralWhite', 'ForestGreen', 'Fuchsia', 'Gainsboro', 'GhostWhite', 'Gold', 'GoldenRod', 'Gray', 'Grey', 'Green', 'GreenYellow', 'HoneyDew', 'HotPink', 'IndianRed', 'Indigo', 'Ivory', 'Khaki', 'Lavender', 'LavenderBlush', 'LawnGreen', 'LemonChiffon', 'LightBlue', 'LightCoral', 'LightCyan', 'LightGoldenRodYellow', 'LightGray', 'LightGrey', 'LightGreen', 'LightPink', 'LightSalmon', 'LightSeaGreen', 'LightSkyBlue', 'LightSlateGray', 'LightSlateGrey', 'LightSteelBlue', 'LightYellow', 'Lime', 'LimeGreen', 'Linen', 'Magenta', 'Maroon', 'MediumAquaMarine', 'MediumBlue', 'MediumOrchid', 'MediumPurple', 'MediumSeaGreen', 'MediumSlateBlue', 'MediumSpringGreen', 'MediumTurquoise', 'MediumVioletRed', 'MidnightBlue', 'MintCream', 'MistyRose', 'Moccasin', 'NavajoWhite', 'Navy', 'OldLace', 'Olive', 'OliveDrab', 'Orange', 'OrangeRed', 'Orchid', 'PaleGoldenRod', 'PaleGreen', 'PaleTurquoise', 'PaleVioletRed', 'PapayaWhip', 'PeachPuff', 'Peru', 'Pink', 'Plum', 'PowderBlue', 'Purple', 'RebeccaPurple', 'Red', 'RosyBrown', 'RoyalBlue', 'SaddleBrown', 'Salmon', 'SandyBrown', 'SeaGreen', 'SeaShell', 'Sienna', 'Silver', 'SkyBlue', 'SlateBlue', 'SlateGray', 'SlateGrey', 'Snow', 'SpringGreen', 'SteelBlue', 'Tan', 'Teal', 'Thistle', 'Tomato', 'Turquoise', 'Violet', 'Wheat', 'White', 'WhiteSmoke', 'Yellow', 'YellowGreen']
+	
 	if(c == 'Pieces'):
 		num = i - (2**s)
 		if(num > (2*tl/3)):
-			colour = 'Red'
+			colour = palette[c1]
 		elif(num > (tl/3)):
-			colour = 'Blue'
+			colour = palette[c2]
 		else:
-			colour = 'Black'
+			colour = palette[c3]
 		
-	if(c == 'Growing_Pieces'):
+	elif(c == 'Growing_Pieces'):
 		if(sl % 3 == 0):
-			colour = 'Blue'
+			colour = palette[c1]
 		elif(sl % 3 == 1):
-			colour = 'Red'
+			colour = palette[c2]
 		elif(sl % 3 == 2):
-			colour = 'Black'
+			colour = palette[c3]
 		
 	elif(c == 'Combine'):
 		if(i % 100 < 35):
-			colour = 'Blue'
+			colour = palette[c1]
 		elif(i % 100 < 70):
-			colour = 'Red'
+			colour = palette[c2]
 		elif(i % 100 < 100):
-			colour = 'Black'
+			colour = palette[c3]
 			
 	elif(c == 'Mix'):
 		if(i % 3 == 0):
-			colour = 'Blue'
+			colour = palette[c1]
 		elif(i % 3 == 1):
-			colour = 'Red'
+			colour = palette[c2]
 		elif(i % 3 == 2):
-			colour = 'Black'
-			
+			colour = palette[c3]
+	
+	elif(c == 'Shambles'):
+		colour = palette[random.randint(0, 147)]
+	
+
 	return colour
 	
 	
@@ -86,11 +93,16 @@ def iterative_draw(root, i, s, sl, l, c, t, r):
 	count = 0
 	pair = 0
 	total = (i - 2**s)
+	c1 = random.randint(0, 147)
+	c2 = random.randint(0, 147)
+	c3 = random.randint(0, 147)
+	
+	special_colours = ['Mix','Combine','Pieces','Growing_Pieces','Spray','Shambles']
 	while count < i:
-		if (c == 'Mix') or (c == 'Combine') or (c == 'Pieces') or (c == 'Growing_Pieces'):
+		if c in special_colours:
 			if(i-2**s < 2**(sl)):
 				sl = sl - 1
-			colour = special_colour(i, c, s, sl, total)
+			colour = special_colour(i, c, s, sl, total, c1, c2, c3)
 		else:
 			colour = c
 		count = count + 1
@@ -126,8 +138,8 @@ def recursive_map(map, i):
 			else:
 				map.append('R')
 		return recursive_map(map, i-1)
-	
 #### usable past 8 iterations
+
 def iterative_map(map, i):
 	count = 0
 	while count < i:
