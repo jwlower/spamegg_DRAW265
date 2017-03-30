@@ -1,6 +1,6 @@
 #process command line arguments
 if [ $# -ne 3 ]; then
-	echo "Syntax: simple_dragon_curve.sh interations line_length colour"
+	echo "Syntax: dragon_spin.sh interations line_length colour"
 	exit
 fi
 
