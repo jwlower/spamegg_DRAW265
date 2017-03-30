@@ -1,6 +1,6 @@
 # process command line arguments
 if [ $# -ne 5 ]; then
-	echo "Syntax: simple_dragon_curve.sh interations line_length colour shadow_scale amount"
+	echo "Syntax: mesh_dragon_curve.sh interations line_length colour shadow_scale amount"
 	exit
 fi
 
