@@ -143,7 +143,7 @@ def iterative_map(map, i):
 
 # ********** process the command line arguments
 if ((len(sys.argv) != 5) and (len(sys.argv)!= 4)):
-	print >> sys.stderr, 'Requires command line input: ' + sys.argv[0] + ' iterations line_length colour rotation_angle'
+	print >> sys.stderr, 'Requires command line input: ' + sys.argv[0] + ' iterations line_length colour rotation_angle(optional)'
 	sys.exit(1)
 try:
 	iterations = int(sys.argv[1])
@@ -154,11 +154,7 @@ try:
 		rotation_angle = float((math.pi)/2)
 	elif len(sys.argv) == 5:
 		rotation_angle = float(sys.argv[4])
-	if (rotation_angle < 1.45) or (rotation_angle > 1.63):
-		print >> sys.stderr, 'To resemble the standard dragon curve the rotation angle should be  1.45 < r < 1.63'
-		print >> sys.stderr, 'Rotation angle r can go out of the recommended range for experimentation'
-		print >> sys.stderr, 'Inorder to make the image clearer as the rotation angle increases the line length should increase'
-		print >> sys.stderr, 'Inorder to keep the image in the frame as the rotation angle decreases the line length should decrease'
+	
 		
 except ValueError:
 	print >> sys.stderr, 'Requires command line input: ' + sys.argv[0] + ' iterations(int > 0) line_length(float > 0) colour(String)'
