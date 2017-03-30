@@ -1,6 +1,5 @@
 import sys
 import math
-import random 
 import Line_Point
 big_count = 0
 '''
@@ -81,8 +80,6 @@ def special_colour(i, c, s, sl, tl, c1, c2, c3):
 		elif(i % 3 == 2):
 			colour = palette[c3]
 	
-	elif(c == 'Shambles'):
-		colour = palette[random.randint(0, 147)]
 	
 
 	return colour
@@ -93,11 +90,11 @@ def iterative_draw(root, i, s, sl, l, c, t, r):
 	count = 0
 	pair = 0
 	total = (i - 2**s)
-	c1 = random.randint(0, 147)
-	c2 = random.randint(0, 147)
-	c3 = random.randint(0, 147)
+	c1 = int(s*l*r)
+	c2 = c1+2
+	c3 = c2+3
 	
-	special_colours = ['Mix','Combine','Pieces','Growing_Pieces','Spray','Shambles']
+	special_colours = ['Mix','Combine','Pieces','Growing_Pieces','Spray']
 	while count < i:
 		if c in special_colours:
 			if(i-2**s < 2**(sl)):
@@ -186,8 +183,8 @@ if colour == 'Fun':
 	fun = True
 
 # root: length line_length, in middle of canvas
-point0 = Line_Point.Point(0.0,-100.0)
-point1 = Line_Point.Point(0.0,-100.0 + line_length)
+point0 = Line_Point.Point(0.0,0.0)
+point1 = Line_Point.Point(0.0,0.0 + line_length)
 root = Line_Point.Line(point0, point1)
 map = ['R']
 new_map = iterative_map(map, iterations)
