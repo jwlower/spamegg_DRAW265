@@ -6,8 +6,8 @@ fi
 
 
 
-# generate dragon
-python generate_dragon.py $1 100 Pieces 3.0 > dragon.txt
+# generate dragons and transform the colours and positions
+python generate_dragon.py $1 100 Growing_Pieces 3.0 > dragon.txt
 
 #convert to svg
 python lines_to_svg_colour.py dragon.txt > hand_fan.svg
