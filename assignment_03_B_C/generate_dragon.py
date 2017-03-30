@@ -4,7 +4,7 @@ import Line_Point
 big_count = 0
 '''
 purpose
-	write to stdout a dragon curve with i iterations, line length l, colour c, and rotation angle(optional) r  preconditions
+	write to stdout a dragon curve with i iterations, line length l, colour c, spiral(optional) s, and rotation angle(optional) r  preconditions
 	i and l are positive non-zero ints and floats (respectively)
 	c is a string
 '''
@@ -41,13 +41,60 @@ def recursive_draw(root, i, l, c, t, r):
 	# continue with recursion
 	recursive_draw(next_line(root,i,t), i-1, l, c, t, r)
 
-##### i = iterations, l = line_length, c = colour, t = turn r = rotation_angle
-def iterative_draw(root, i, l, c, t, r):
+	
+	
+##### i = iterations, c = colour, s = total segments, sl = segments left to draw, t = total number of lines
+def special_colour(i, c, s, sl, tl):
+	if(c == 'Pieces'):
+		num = i - (2**s)
+		if(num > (2*tl/3)):
+			colour = 'Red'
+		elif(num > (tl/3)):
+			colour = 'Blue'
+		else:
+			colour = 'Black'
+		
+	if(c == 'Growing_Pieces'):
+		if(sl % 3 == 0):
+			colour = 'Blue'
+		elif(sl % 3 == 1):
+			colour = 'Red'
+		elif(sl % 3 == 2):
+			colour = 'Black'
+		
+	elif(c == 'Combine'):
+		if(i % 100 < 35):
+			colour = 'Blue'
+		elif(i % 100 < 70):
+			colour = 'Red'
+		elif(i % 100 < 100):
+			colour = 'Black'
+			
+	elif(c == 'Mix'):
+		if(i % 3 == 0):
+			colour = 'Blue'
+		elif(i % 3 == 1):
+			colour = 'Red'
+		elif(i % 3 == 2):
+			colour = 'Black'
+			
+	return colour
+	
+	
+##### i = iterations, s = total segments to draw, sl = segments left to draw, l = line_length, c = colour, t = turn r = rotation_angle
+def iterative_draw(root, i, s, sl, l, c, t, r):
 	count = 0
 	pair = 0
+	total = (i - 2**s)
 	while count < i:
+		if (c == 'Mix') or (c == 'Combine') or (c == 'Pieces') or (c == 'Growing_Pieces'):
+			if(i-2**s < 2**(sl)):
+				sl = sl - 1
+			colour = special_colour(i, c, s, sl, total)
+		else:
+			colour = c
 		count = count + 1
-		print 'line', root, c
+		print 'line', root, colour
 		root = next_line(root,i,t,r)
 		i = i - 1
 		
@@ -66,8 +113,6 @@ def iterative_draw_c(root, i, l, c, t, r):
 		i = i - 1	
 
 		
-
-
 #### not usable past 8 iterations, python caps at 999 iterations
 def recursive_map(map, i):
 	if i == 0:
@@ -81,6 +126,7 @@ def recursive_map(map, i):
 			else:
 				map.append('R')
 		return recursive_map(map, i-1)
+	
 #### usable past 8 iterations
 def iterative_map(map, i):
 	count = 0
@@ -140,4 +186,4 @@ cs = len(colours)
 if fun:
 	iterative_draw_c(root,its,line_length,cs,new_map,rotation_angle)
 else:
-	iterative_draw(root,its,line_length,colour,new_map,rotation_angle)
+	iterative_draw(root,its,iterations,iterations,line_length,colour,new_map,rotation_angle)
